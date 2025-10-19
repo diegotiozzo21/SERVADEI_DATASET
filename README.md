@@ -4,6 +4,8 @@ This open-source dataset that can be used to test and develop novel SLAM algorit
 
 ![](friulbot.jpg)
 
+---
+
 In the following table we describe all the topics stored in the ROS bag files. 
 
 | Topic                                | Message Type | Rate [Hz] | Description                                                                                                                                                  |
@@ -17,11 +19,16 @@ In the following table we describe all the topics stored in the ROS bag files.
 | map\_base\_link/odometry             | Odometry     | 20        | Pose of the robot tracked by the SLAM algorithm.                                                                                                              |
 | tf                                   | tfMessage    | 400       | Transformations (translations and rotations) between different coordinate frames in the robot.                                                                |
 
+---
 
 The dataset comprises a file indicating the pose of each sensor with respect to the LiDAR sensor. The multispectral images are stored as TIFF files in separate directories for each survey. The data from the DLS2 light sensor are available as the metadata associated to each TIFF image of the multispectral camera. Additionally, the dataset includes the post-processed ROS bag files in which data from the Velodyne LiDAR sensor and the Micasense camera are merged together to compute the vegetation indexes. This dataset provides a resource to facilitate advancements in autonomous navigation, SLAM, and precision agriculture, by offering both raw and post-processed data.
 
+---
+
 ## Test 1
 [Download](https://zenodo.org/records/13983627?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6ImExZjQ1NWRmLTY4M2UtNDcyMy1iNTAzLTliOWFhODMwYjUxZCIsImRhdGEiOnt9LCJyYW5kb20iOiI2NDQ0YmExZTExMGVkODA4ZDllY2NjNzJkMDJmN2E4MiJ9.WBCjiIw4l4HL7RD5h0HBXe4a8c7NZijiVUWVPciTRpCN4qtiwPdKDcBX_uMncdLZsy-Kbfq9mOQjdIC0B3khkA)
+
+---
 
 ## Test 2 
 
@@ -34,7 +41,92 @@ The dataset comprises a file indicating the pose of each sensor with respect to 
 ### 25-07-2024
 [Download](https://zenodo.org/records/13984309?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjVjZWY4NGM3LWE4ZGMtNGM0NS04NTdlLTY3MWYwM2FkNjFlMiIsImRhdGEiOnt9LCJyYW5kb20iOiIzN2VkYmIzOWRjNTNlZmNkNzRmZGIwYTI4NWY2OTExYiJ9.fWafijSYQXUzAjo39pwBRtodcIIWTEjv39eGGUAzcDZUMW7XSzMHmpjx0bSYU28KwujhlxFNjp1s8PSR6yaFYA)
 
+---
+
 ## Test 3
 [Download](https://zenodo.org/records/13984355?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjkzZWQ3MDFjLTI0OGEtNDU1Zi1iZDQ2LTI0MzBiYjA4ZTc2MCIsImRhdGEiOnt9LCJyYW5kb20iOiJjYmYwYjEwZTY1MzZkNGUwYWIyZDZhZWMwOWVlZjBkMCJ9.OfTHa9puoNne9wjBi7tWgw8oHgD1hLrbxib9QkmYI1HIniHyq-HEU4-Xh9yv2jzd_OQSzxxiSl_H4Xp4ozjOQA)
+
+---
+
+# ROS Bag Reader (Python)
+
+This repository provides a Python tool for reading and extracting data from **ROS1 `.bag` files** without requiring a full ROS installation.  
+It uses the [`rosbags`](https://pypi.org/project/rosbags/) library to deserialize ROS messages directly into Python objects and extract relevant information such as IMU, GNSS, SLAM odometry, and LiDAR point clouds.
+
+---
+
+## Features
+
+List of the main topics available in a ROS bag file  
+- Read **IMU** data (`imu/data`)  
+- Read **GNSS** data (`ublox_position_receiver/fix`)  
+- Read **SLAM odometry** (`map_base_link/odometry`)  
+- Read **navigation status** (`move_base/status`)  
+- Read **Velodyne LiDAR** data (`velodyne_points`) and extract XYZ coordinates  
+
+---
+
+## Requirements
+
+You can install all dependencies in a **Conda** environment:
+
+```bash
+conda create -n bagreader_env python=3.10 numpy matplotlib
+conda activate bagreader_env
+pip install rosbags
+```
+
+Alternatively, using `pip` only:
+
+```bash
+pip install numpy matplotlib rosbags
+```
+
+---
+
+## Usage
+
+### 1. Place your ROS bag file
+Put your `.bag` file in the same folder as `bag_reader.py`, or update the path in the constructor:
+```python
+self.bagpath = Path('./your_bag_file.bag')
+```
+
+### 2. Run the script
+You can interact with the class directly in a Python terminal or script:
+
+```python
+from bag_reader import ReadBag
+
+reader = ReadBag()
+
+# List all available topics
+reader.get_topic_list()
+
+# Extract data from specific topics
+reader.read_imu_data()
+reader.read_gnss_data()
+reader.read_slam_data()
+reader.read_nav_status()
+reader.read_velodyne_data()
+```
+
+Each method reads messages from the corresponding topic and converts them into NumPy arrays for further analysis.
+
+---
+
+## Example: Extracting LiDAR Points
+
+```python
+scans = reader.read_velodyne_data()
+print(f"Number of scans: {len(scans)}")
+print("First scan shape:", scans[0].shape)
+print("First few points:\n", scans[0][:5])
+```
+
+This returns a list of NumPy arrays, each containing the `[x, y, z]` coordinates of a LiDAR scan.
+
+---
+
 
 
