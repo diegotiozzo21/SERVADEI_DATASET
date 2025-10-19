@@ -71,7 +71,7 @@ List of the main topics available in a ROS bag file
 You can install all dependencies in a **Conda** environment:
 
 ```bash
-conda create -n bagreader_env python=3.10 numpy matplotlib
+conda create -n bagreader_env python=3.10 numpy
 conda activate bagreader_env
 pip install rosbags
 ```
@@ -79,7 +79,7 @@ pip install rosbags
 Alternatively, using `pip` only:
 
 ```bash
-pip install numpy matplotlib rosbags
+pip install numpy rosbags
 ```
 
 ---

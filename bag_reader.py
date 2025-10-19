@@ -2,8 +2,6 @@ from pathlib import Path
 from rosbags.highlevel import AnyReader
 from rosbags.typesys import Stores, get_typestore
 import numpy as np
-import matplotlib.pyplot as plt 
-import os
 
 
 class ReadBag:
@@ -35,6 +33,7 @@ class ReadBag:
         linear_acc = np.asarray(linear_acc)
         angular_vel = np.asarray(angular_vel)
         orientation_quaternion = np.asarray(orientation_quaternion)
+        return time, linear_acc, angular_vel, orientation_quaternion
 
     def read_gnss_data(self):
         time = []
@@ -60,6 +59,7 @@ class ReadBag:
         latitude_cov = np.asarray(latitude_cov)
         longitude = np.asarray(longitude)
         longitude_cov = np.asarray(longitude_cov) 
+        return time, latitude, latitude_cov, longitude, longitude_cov, altitude, altitude_cov
 
     def read_slam_data(self): 
         time = []
@@ -77,6 +77,7 @@ class ReadBag:
         y_coord = np.asarray(y_coord)
         x_coord_0, y_coord_0 = x_coord[0], y_coord[0]
         x_coord, y_coord = x_coord - x_coord_0, y_coord - y_coord_0
+        return time, x_coord, y_coord
 
     def read_nav_status(self):
         with AnyReader([self.bagpath], default_typestore=self.typestore) as reader:
@@ -119,3 +120,4 @@ class ReadBag:
                 pc_array = np.frombuffer(msg.data, dtype=np.dtype(dtype_list))
                 xyz = np.vstack((pc_array['x'], pc_array['y'], pc_array['z'])).T
                 scans.append(xyz)
+        return time, scans
