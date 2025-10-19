@@ -1,0 +1,26 @@
+footprint: [[-0.5, -0.33], [-0.5, 0.33], [0.5, 0.33], [0.5, -0.33]]
+footprint_padding: 0.01
+
+robot_base_frame: base_link
+update_frequency: 0.2 # 1.0 changed 19 mar 2025
+publish_frequency: 0.2 # 3.0 changed 19 mar 2025
+transform_tolerance: 0.5
+
+resolution: 0.1 # 0.1 changed 19 mar 2025
+
+#max_obstacle_height : 1.5 # added 19 mar 2025
+
+obstacle_range: 20.0 # 5.5 changed 19 mar 2025
+raytrace_range: 21.0 # 6.0 changed 19 mar 2025
+
+#layer definitions
+static:
+    map_topic: /map
+    subscribe_to_updates: true
+
+obstacles_laser:
+    observation_sources: laser
+    laser: {data_type: LaserScan, clearing: true, marking: true, topic: map_scan, inf_is_valid: true}
+
+inflation:
+    inflation_radius: 0.5 # 0.5 changed 19 mar 2025
