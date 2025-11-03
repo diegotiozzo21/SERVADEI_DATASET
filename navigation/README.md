@@ -3,7 +3,9 @@
 This repository provides a complete set of **configuration** and **launch files** to enable **autonomous navigation** for a ROS1-based mobile robot.  
 It integrates the **ROS Navigation Stack** for path planning and control with the **LIO-SAM** SLAM algorithm for LiDAR-based localization and mapping.
 
----
+The following graph provides an overview of all the nodes that compose the proposed framework.
+
+![Overview of the framework nodes](rosgraph.svg)
 
 ## Overview
 
