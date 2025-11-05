@@ -1,4 +1,4 @@
-# SERVADEI_DATASET
+# FRIULBOT_DATASET
 
 This open-source dataset that can be used to test and develop novel SLAM algorithms and mapping techniques for autonomous mobile robots in vineyards. The dataset consists of raw ROS bag files and multispectral images collected in the field with the robot autonomously inspecting the vineyard rows. The dataset includes information on the robot status, IMU, GNSS, and wheels odometry data, point clouds of the vineyard, and multispectral images.
 
